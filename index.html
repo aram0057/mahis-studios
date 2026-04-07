@@ -24,6 +24,66 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--off);color:var(--n);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
+/* ── SKIP TO CONTENT ── */
+.skip-link{
+  position:absolute;top:-100%;left:16px;z-index:200000;
+  background:var(--b);color:var(--w);
+  padding:10px 20px;border-radius:0 0 8px 8px;
+  font-family:var(--sans);font-size:14px;font-weight:600;
+  text-decoration:none;
+  transition:top 0.15s;
+}
+.skip-link:focus{top:0}
+
+/* ── FOCUS STYLES ── */
+:focus-visible{
+  outline:3px solid var(--b);
+  outline-offset:3px;
+  border-radius:4px;
+}
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.nav-cta:focus-visible,
+.submit-btn:focus-visible{
+  outline:3px solid var(--b);
+  outline-offset:3px;
+  border-radius:100px;
+}
+.service-arrow:focus-visible{
+  outline:3px solid var(--b);
+  outline-offset:2px;
+  border-radius:50%;
+}
+.carousel-btn:focus-visible{
+  outline:3px solid var(--y);
+  outline-offset:2px;
+  border-radius:50%;
+}
+.pill:focus-visible{
+  outline:3px solid var(--n);
+  outline-offset:2px;
+  border-radius:100px;
+}
+.founder-link:focus-visible{
+  outline:3px solid var(--n);
+  outline-offset:4px;
+  border-radius:2px;
+}
+
+/* ── SCREEN READER ONLY ── */
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+/* ── REDUCED MOTION ── */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
+  #preloader{display:none!important}
+  #main{opacity:1!important}
+}
+
 /* ── PRELOADER ── */
 #preloader{
   position:fixed;inset:0;background:var(--w);z-index:9999;
@@ -85,15 +145,15 @@ nav.scrolled{
 }
 .nav-logo{
   text-decoration:none;
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;
 }
 .nav-logo img{
-  height:48px;width:auto;display:block;
+  height:56px;width:56px;
+  border-radius:14px;
+  object-fit:cover;
+  display:block;
 }
-.nav-logo-text{
-  font-family:var(--cab);font-size:17px;font-weight:900;
-  color:var(--n);letter-spacing:-0.4px;
-}
+.nav-logo-text{display:none}
 .logo-mark{
   width:28px;height:28px;border-radius:6px;
   background:var(--y);color:var(--n);
@@ -101,7 +161,7 @@ nav.scrolled{
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .nav-links{display:flex;align-items:center;gap:32px}
-.nav-link{font-size:13px;font-weight:500;color:var(--n);opacity:0.4;text-decoration:none;transition:opacity 0.2s}
+.nav-link{font-size:13px;font-weight:500;color:var(--n);opacity:0.6;text-decoration:none;transition:opacity 0.2s}
 .nav-link:hover{opacity:1}
 .nav-cta{
   background:var(--n);color:var(--y);border:none;border-radius:100px;
@@ -186,26 +246,60 @@ nav.scrolled{
 }
 .hero-sub{
   font-size:17px;line-height:1.7;
-  color:var(--n);opacity:0.55;
+  color:var(--n);opacity:0.75;
   max-width:380px;
+}
+.hero-discipline{
+  font-family:var(--cab);font-weight:800;font-size:18px;
+  color:var(--n);opacity:1;
+  background:var(--y);
+  padding:1px 8px 2px;
+  border-radius:4px;
+  display:inline;
 }
 .hero-actions{
   display:flex;flex-direction:column;
   align-items:flex-end;gap:16px;
 }
 .btn-primary{
-  background:var(--b);color:var(--w);border:none;border-radius:100px;
+  background:var(--n);color:var(--y);border:none;border-radius:100px;
   padding:18px 40px;font-family:var(--sans);font-size:16px;font-weight:600;
   cursor:pointer;text-decoration:none;display:inline-block;
-  transition:opacity 0.2s,transform 0.15s;white-space:nowrap;
+  position:relative;overflow:visible;
+  transition:transform 0.15s;white-space:nowrap;
 }
-.btn-primary:hover{opacity:0.84;transform:translateY(-2px)}
+/* comic explosion ripple on hover */
+.btn-primary::before{
+  content:'';
+  position:absolute;inset:-6px;
+  border-radius:100px;
+  background:transparent;
+  border:3px solid var(--y);
+  opacity:0;
+  transform:scale(0.85);
+  transition:opacity 0.18s,transform 0.28s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
+.btn-primary::after{
+  content:'';
+  position:absolute;inset:-12px;
+  border-radius:100px;
+  background:transparent;
+  border:2px dashed var(--n);
+  opacity:0;
+  transform:scale(0.7);
+  transition:opacity 0.18s 0.04s,transform 0.32s 0.04s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
+.btn-primary:hover{transform:scale(1.04)}
+.btn-primary:hover::before{opacity:1;transform:scale(1)}
+.btn-primary:hover::after{opacity:0.35;transform:scale(1)}
 .btn-ghost{
-  font-size:13px;color:var(--n);opacity:0.4;
+  font-size:13px;color:var(--n);opacity:0.6;
   text-decoration:none;font-weight:500;
   transition:opacity 0.2s;
 }
-.btn-ghost:hover{opacity:0.8}
+.btn-ghost:hover{opacity:1}
 
 /* ── VS SECTION ── */
 .vs-section{
@@ -245,7 +339,7 @@ nav.scrolled{
   transition:clip-path 0.7s cubic-bezier(0.4,0,0.2,1);
 }
 .bar.wide{flex:2.5}.bar.mid{flex:1}.bar.short{flex:0.8}
-.bar.dark{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.bar.dark{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85)}
 .bar-outline{
   border:1.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.5);
   font-size:10px;font-weight:700;letter-spacing:0.07em;font-family:var(--cab);
@@ -309,9 +403,10 @@ nav.scrolled{
 .service-card:last-child{border-right:none}
 .service-card:hover{background:var(--y)}
 .service-num{
-  font-family:var(--cab);font-size:11px;font-weight:900;
-  letter-spacing:0.05em;color:var(--n);opacity:0.25;
+  font-family:var(--cab);font-size:13px;font-weight:900;
+  letter-spacing:0.06em;color:var(--n);opacity:0.6;
   margin-bottom:40px;
+  text-transform:uppercase;
 }
 .service-tagline{
   font-size:10px;font-weight:700;letter-spacing:0.1em;
@@ -470,9 +565,13 @@ nav.scrolled{
   font-family:var(--cab);font-size:14px;font-weight:800;color:rgba(255,255,255,0.3);
 }
 .review-name{font-family:var(--cab);font-size:14px;font-weight:800;color:var(--w);letter-spacing:-0.2px}
-.review-role{font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px}
+.review-role{font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px}
 .carousel-controls{
   display:flex;gap:10px;margin-top:32px;
+}
+/* hide arrows on desktop — all 3 cards visible at once */
+@media(min-width:901px){
+  .carousel-controls{display:none}
 }
 .carousel-btn{
   width:40px;height:40px;border-radius:50%;
@@ -524,7 +623,7 @@ nav.scrolled{
 .form-field:focus{border-bottom-color:var(--n)}
 .form-field.error{border-bottom-color:#e53e3e}
 .field-wrap{display:inline-flex;flex-direction:column;gap:4px}
-.field-hint{font-size:11px;color:#e53e3e;opacity:0;height:0;overflow:hidden;transition:opacity 0.2s;font-weight:500;}
+.field-hint{font-size:11px;color:#c0392b;opacity:0;height:0;overflow:hidden;transition:opacity 0.2s;font-weight:600;}
 .field-hint.visible{opacity:1;height:auto;}
 .form-field.wide{min-width:170px}
 .pills{display:flex;flex-wrap:wrap;gap:8px}
@@ -543,7 +642,7 @@ nav.scrolled{
   cursor:pointer;transition:opacity 0.2s,transform 0.15s;
 }
 .submit-btn:hover{opacity:0.84;transform:translateY(-2px)}
-.submit-note{font-size:13px;color:var(--n);opacity:0.38}
+.submit-note{font-size:13px;color:var(--n);opacity:0.58}
 .success-msg{
   display:none;background:var(--n);color:var(--y);
   border-radius:16px;padding:28px 32px;
@@ -559,15 +658,15 @@ footer{
 }
 .footer-logo{
   font-family:var(--cab);font-size:15px;font-weight:900;
-  color:var(--w);opacity:0.25;letter-spacing:-0.3px;
+  color:var(--w);opacity:0.6;letter-spacing:-0.3px;
 }
-.footer-right{font-size:13px;color:var(--w);opacity:0.2}
+.footer-right{font-size:13px;color:var(--w);opacity:0.5}
 
 /* ── MOBILE ── */
 @media(max-width:900px){
   nav{padding:16px 20px}
   .nav-links{display:none}
-  .hero{min-height:auto}
+  .hero{min-height:100svh}
   .hero-yblock{width:140px;height:140px}
   .hero-tag{margin:100px 0 0 20px}
   .hero-headline{padding:0 20px}
@@ -643,25 +742,29 @@ footer{
 </head>
 <body>
 
+<!-- SKIP TO CONTENT -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 <!-- CUSTOM CURSOR -->
-<div id="cursor-ring"></div>
-<div id="cursor-dot"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
 
 <!-- PRELOADER -->
-<div id="preloader">
+<div id="preloader" aria-hidden="true" role="presentation">
   <div id="pl-counter">0</div>
   <div id="pl-drop"></div>
   <div id="pl-burst"></div>
-  <svg id="pl-rays" width="1" height="1" viewBox="-150 -150 300 300" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;overflow:visible"></svg>
-  <div id="pl-logo"><img src="assets/images/mahis-logo.png" alt="Mahis Studios" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+  <svg id="pl-rays" width="1" height="1" viewBox="-150 -150 300 300" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;overflow:visible" aria-hidden="true"></svg>
+  <div id="pl-logo"><img src="assets/images/mahis-logo.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
 </div>
 
 <!-- MAIN -->
 <div id="main" style="opacity:0">
+<a id="main-content" tabindex="-1" style="position:absolute;top:0;left:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none" aria-label="Main content"></a>
 
-<nav id="navbar">
-  <a href="#" class="nav-logo">
-    <img src="assets/images/mahis-logo.png" alt="Mahis Studios">
+<nav id="navbar" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="Mahis Studios — home">
+    <img src="assets/images/mahis-logo.png" alt="" aria-hidden="true">
     <span class="nav-logo-text">Mahis Studios</span>
   </a>
   <div class="nav-links">
@@ -672,9 +775,10 @@ footer{
   <a href="#contact" class="nav-cta">Book a free call</a>
 </nav>
 
+<main>
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-yblock"></div>
+<section class="hero" aria-label="Hero">
+  <div class="hero-yblock" aria-hidden="true"></div>
 
   <p class="hero-tag">Available now &mdash; Melbourne, AU</p>
 
@@ -687,16 +791,16 @@ footer{
   </div>
 
   <div class="hero-bottom">
-    <p class="hero-sub">UX strategy and product design for startups who care about conversion, not just how it looks. Fixed-scope. No fluff.</p>
+    <p class="hero-sub"><span class="hero-discipline">UX strategy &amp; product design</span> for startups who care about conversion, not just how it looks. Fixed-scope. No fluff.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Book a free call &rarr;</a>
       <a href="#services" class="btn-ghost">See how we work &darr;</a>
     </div>
   </div>
-</div>
+</section>
 
 <!-- VS SECTION -->
-<div class="vs-section">
+<div class="vs-section" role="region" aria-label="Mahis Studios vs hiring in-house">
   <p class="vs-label">With Mahis Studios vs. hiring in-house</p>
   <div class="vs-row">
     <span class="vs-tag">With us</span>
@@ -724,42 +828,42 @@ footer{
     <p class="section-body">We fix conversion problems — not just aesthetics. From first screen to handoff.</p>
   </div>
   <div class="services-grid">
-    <div class="service-card">
-      <div class="service-num">01 &mdash; Design Sprint</div>
+    <article class="service-card">
+      <div class="service-num" aria-hidden="true">01 &mdash; Design Sprint</div>
       <div class="service-tagline">Validate fast</div>
-      <div class="service-title">From idea to testable prototype.</div>
-      <div class="service-desc">UX discovery, user flows, wireframes and a clickable prototype ready for testing. Great for pre-seed founders who need to move without burning budget.</div>
+      <h3 class="service-title">From idea to testable prototype.</h3>
+      <p class="service-desc">UX discovery, user flows, wireframes and a clickable prototype ready for testing. Great for pre-seed founders who need to move without burning budget.</p>
       <div class="service-footer">
         <span>From $2,500</span>
-        <a href="#contact" class="service-arrow">&rarr;</a>
+        <a href="#contact" class="service-arrow" aria-label="Book Design Sprint — from $2,500">&rarr;</a>
       </div>
-    </div>
-    <div class="service-card">
-      <div class="service-num">02 &mdash; MVP Ready</div>
+    </article>
+    <article class="service-card">
+      <div class="service-num" aria-hidden="true">02 &mdash; MVP Ready</div>
       <div class="service-tagline">Ship or pitch</div>
-      <div class="service-title">Full product, investor-ready.</div>
-      <div class="service-desc">Full UX + UI, hi-fi prototype, core design system and dev-ready handoff. Walk into your investor meeting or dev kickoff with confidence.</div>
+      <h3 class="service-title">Full product, investor-ready.</h3>
+      <p class="service-desc">Full UX + UI, hi-fi prototype, core design system and dev-ready handoff. Walk into your investor meeting or dev kickoff with confidence.</p>
       <div class="service-footer">
         <span>From $5,000</span>
-        <a href="#contact" class="service-arrow">&rarr;</a>
+        <a href="#contact" class="service-arrow" aria-label="Book MVP Ready — from $5,000">&rarr;</a>
       </div>
-    </div>
-    <div class="service-card">
-      <div class="service-num">03 &mdash; Design Partner</div>
+    </article>
+    <article class="service-card">
+      <div class="service-num" aria-hidden="true">03 &mdash; Design Partner</div>
       <div class="service-tagline">Ongoing support</div>
-      <div class="service-title">Your designer, without the hire.</div>
-      <div class="service-desc">Ongoing UX/UI, design system maintenance and strategic input without the overhead of a full-time designer. Monthly, flexible, no lock-in.</div>
+      <h3 class="service-title">Your designer, without the hire.</h3>
+      <p class="service-desc">Ongoing UX/UI, design system maintenance and strategic input without the overhead of a full-time designer. Monthly, flexible, no lock-in.</p>
       <div class="service-footer">
         <span>Let's talk</span>
-        <a href="#contact" class="service-arrow">&rarr;</a>
+        <a href="#contact" class="service-arrow" aria-label="Book Design Partner — let's talk">&rarr;</a>
       </div>
-    </div>
+    </article>
   </div>
 </section>
 
 <!-- HOW -->
 <section class="how-section" id="how">
-  <div class="how-bg-text">process.</div>
+  <div class="how-bg-text" aria-hidden="true">process.</div>
   <p class="section-eyebrow">How it works</p>
   <h2 class="section-h2" style="color:var(--w);margin-bottom:14px">Simple.<br><span class="it">No surprises.</span></h2>
   <p class="section-body" style="color:var(--w);margin-bottom:52px;max-width:400px">Fixed scope, fixed price, clear timeline. You know exactly what you're getting before we start.</p>
@@ -771,8 +875,8 @@ footer{
       <div class="step-title">Free intro call</div>
       <div class="step-desc">30 minutes. We learn about your product, your users, and what's blocking growth.</div>
     </div>
-    <div class="step-connector">
-      <svg width="32" height="18" viewBox="0 0 32 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="step-connector" aria-hidden="true">
+      <svg width="32" height="18" viewBox="0 0 32 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M0 9H28M28 9L20 2M28 9L20 16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
@@ -783,8 +887,8 @@ footer{
       <div class="step-title">Scope + proposal</div>
       <div class="step-desc">Clear deliverables, fixed price, defined timeline. No surprises, no scope creep.</div>
     </div>
-    <div class="step-connector">
-      <svg width="32" height="18" viewBox="0 0 32 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="step-connector" aria-hidden="true">
+      <svg width="32" height="18" viewBox="0 0 32 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M0 9H28M28 9L20 2M28 9L20 16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
@@ -795,8 +899,8 @@ footer{
       <div class="step-title">We get to work</div>
       <div class="step-desc">Regular updates, no disappearing. You're involved without being buried.</div>
     </div>
-    <div class="step-connector">
-      <svg width="32" height="18" viewBox="0 0 32 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="step-connector" aria-hidden="true">
+      <svg width="32" height="18" viewBox="0 0 32 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M0 9H28M28 9L20 2M28 9L20 16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
@@ -818,8 +922,8 @@ footer{
       <h2 class="section-h2" style="margin-bottom:20px">Hi, I'm <strong>Abbi.</strong></h2>
       <p class="founder-bio">Based in Melbourne, I'm a prodigy designer with 5+ years of experience across 8 different projects and industries — from early-stage startups to consumer products. I started Mahis Studios to give founders access to senior design thinking without the agency overhead or the hiring headache.</p>
       <div class="founder-links">
-        <a href="https://abbikamak.com" target="_blank" class="founder-link">Portfolio ↗</a>
-        <a href="https://www.youtube.com/channel/UCgqQ6kKF2xJW3Q6OmwPDP0w" target="_blank" class="founder-link">YouTube ↗</a>
+        <a href="https://abbikamak.com" target="_blank" rel="noopener noreferrer" class="founder-link">Portfolio ↗<span class="sr-only"> (opens in new tab)</span></a>
+        <a href="https://www.youtube.com/channel/UCgqQ6kKF2xJW3Q6OmwPDP0w" target="_blank" rel="noopener noreferrer" class="founder-link">YouTube ↗<span class="sr-only"> (opens in new tab)</span></a>
       </div>
     </div>
     <div class="founder-img-wrap">
@@ -837,7 +941,7 @@ footer{
   <div class="carousel">
     <div class="carousel-track" id="carouselTrack">
       <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+        <div class="review-stars" role="img" aria-label="5 out of 5 stars">★★★★★</div>
         <p class="review-text">"Working with Abbi was the clearest design process I've been through. We went from a vague idea to a prototype investors actually reacted to — in two weeks."</p>
         <div class="review-author">
           <div class="review-avatar">JM</div>
@@ -848,7 +952,7 @@ footer{
         </div>
       </div>
       <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+        <div class="review-stars" role="img" aria-label="5 out of 5 stars">★★★★★</div>
         <p class="review-text">"Finally a designer who asks about conversion before asking about colours. The output was sharp, the communication was even better. Would do it again without hesitation."</p>
         <div class="review-author">
           <div class="review-avatar">SL</div>
@@ -859,7 +963,7 @@ footer{
         </div>
       </div>
       <div class="review-card">
-        <div class="review-stars">★★★★★</div>
+        <div class="review-stars" role="img" aria-label="5 out of 5 stars">★★★★★</div>
         <p class="review-text">"Fixed scope, fixed price — exactly what a pre-seed founder needs. No surprises, no scope creep. Just clean work delivered on time. Abbi gets what early-stage actually looks like."</p>
         <div class="review-author">
           <div class="review-avatar">RP</div>
@@ -872,49 +976,52 @@ footer{
     </div>
   </div>
   <div class="carousel-controls">
-    <button class="carousel-btn" id="carouselPrev">&#8592;</button>
-    <button class="carousel-btn" id="carouselNext">&#8594;</button>
+    <button class="carousel-btn" id="carouselPrev" aria-label="Previous testimonial"><span aria-hidden="true">&#8592;</span></button>
+    <button class="carousel-btn" id="carouselNext" aria-label="Next testimonial"><span aria-hidden="true">&#8594;</span></button>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section class="cta-section" id="contact">
-  <div class="cta-bg">hello.</div>
+  <div class="cta-bg" aria-hidden="true">hello.</div>
   <p class="section-eyebrow" style="color:var(--n);opacity:0.35">Get in touch</p>
   <h2 class="section-h2" style="color:var(--n);margin-bottom:10px">Let's talk about<br><span class="it">your product.</span></h2>
   <p class="section-body" style="color:var(--n);margin-bottom:48px">Takes 30 seconds. No commitment, no sales pitch.</p>
   <div class="form-wrap">
-    <form id="contactForm" onsubmit="handleSubmit(event)" novalidate>
+    <form id="contactForm" onsubmit="handleSubmit(event)" novalidate aria-label="Contact form">
       <div class="form-sentence">
-        <span class="form-word">My name is</span>
+        <span class="form-word" aria-hidden="true">My name is</span>
         <div class="field-wrap">
-          <input class="form-field" id="fname" type="text" placeholder="your name" autocomplete="name">
-          <span class="field-hint" id="fname-hint">Please enter your name</span>
+          <input class="form-field" id="fname" type="text" placeholder="your name" autocomplete="name"
+            aria-label="Your name" aria-describedby="fname-hint" aria-required="true">
+          <span class="field-hint" id="fname-hint" role="alert" aria-live="polite">Please enter your name</span>
         </div>
-        <span class="form-word">from</span>
+        <span class="form-word" aria-hidden="true">from</span>
         <div class="field-wrap">
-          <input class="form-field wide" id="fcompany" type="text" placeholder="company / startup" autocomplete="organization">
-          <span class="field-hint" id="fcompany-hint">Please enter your company or startup</span>
+          <input class="form-field wide" id="fcompany" type="text" placeholder="company / startup" autocomplete="organization"
+            aria-label="Company or startup name" aria-describedby="fcompany-hint" aria-required="true">
+          <span class="field-hint" id="fcompany-hint" role="alert" aria-live="polite">Please enter your company or startup</span>
         </div>
       </div>
       <div class="form-sentence">
-        <span class="form-word">I want to chat about my</span>
-        <div class="pills">
-          <button type="button" class="pill active" data-value="startup">startup</button>
-          <button type="button" class="pill" data-value="product">product</button>
-          <button type="button" class="pill" data-value="MVP">MVP</button>
-          <button type="button" class="pill" data-value="design system">design system</button>
+        <span class="form-word" id="pill-group-label">I want to chat about my</span>
+        <div class="pills" role="group" aria-labelledby="pill-group-label">
+          <button type="button" class="pill active" data-value="startup" aria-pressed="true">startup</button>
+          <button type="button" class="pill" data-value="product" aria-pressed="false">product</button>
+          <button type="button" class="pill" data-value="MVP" aria-pressed="false">MVP</button>
+          <button type="button" class="pill" data-value="design system" aria-pressed="false">design system</button>
         </div>
       </div>
       <div class="form-sentence" style="margin-top:6px">
-        <span class="form-word">Reach me at</span>
+        <span class="form-word" aria-hidden="true">Reach me at</span>
         <div class="field-wrap">
-          <input class="form-field wide" id="femail" type="email" placeholder="email address" autocomplete="email">
-          <span class="field-hint" id="femail-hint">Enter a valid email (e.g. you@example.com)</span>
+          <input class="form-field wide" id="femail" type="email" placeholder="email address" autocomplete="email"
+            aria-label="Your email address" aria-describedby="femail-hint" aria-required="true">
+          <span class="field-hint" id="femail-hint" role="alert" aria-live="polite">Enter a valid email (e.g. you@example.com)</span>
         </div>
       </div>
       <div class="form-submit">
-        <button type="submit" class="submit-btn">Book the call &rarr;</button>
+        <button type="submit" class="submit-btn">Book the call <span aria-hidden="true">&rarr;</span></button>
         <span class="submit-note">Free &middot; 30 min &middot; no pressure</span>
       </div>
     </form>
@@ -922,7 +1029,9 @@ footer{
   </div>
 </section>
 
-<footer>
+</main>
+
+<footer aria-label="Site footer">
   <span class="footer-logo">Mahis Studios</span>
   <span class="footer-right">Melbourne, AU &mdash; &copy; 2025</span>
 </footer>
@@ -1056,8 +1165,12 @@ footer{
 // PILLS
 document.querySelectorAll('.pill').forEach(function(pill){
   pill.addEventListener('click',function(){
-    document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active')});
+    document.querySelectorAll('.pill').forEach(function(p){
+      p.classList.remove('active');
+      p.setAttribute('aria-pressed','false');
+    });
     pill.classList.add('active');
+    pill.setAttribute('aria-pressed','true');
   });
 });
 
